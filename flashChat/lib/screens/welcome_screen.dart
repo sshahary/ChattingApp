@@ -8,11 +8,35 @@ class WelcomeScreen extends StatefulWidget {
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen> {
+class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProviderStateMixin{
+  late AnimationController controller;
+  late Animation animation;
+  @override
+  void initState() {
+    // TODO: implement initState
+    controller = AnimationController(vsync: this,
+      duration: Duration(seconds: 2)
+    );
+    controller.forward();
+    animation = ColorTween(
+        begin: Colors.greenAccent,
+        end: Colors.pinkAccent).animate(controller);
+    controller.addListener(() {
+
+      setState(() {});
+      print(animation.value);
+      });
+    super.initState();
+  }
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: animation.value,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
@@ -29,7 +53,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   ),
                 ),
                 Text(
-                  'Flash Chat',
+                  'Faltu Chat',
                   style: TextStyle(
                     fontSize: 45.0,
                     fontWeight: FontWeight.w900,
